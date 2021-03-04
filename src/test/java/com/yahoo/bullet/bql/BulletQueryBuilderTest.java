@@ -93,6 +93,18 @@ public class BulletQueryBuilderTest {
     }
 
     @Test
+    public void testCountDistnctSubFields() {
+//        BQLResult result = builder.buildQuery("SELECT COUNT(DISTINCT page_uri, bucket_id_tag.garbage, pty_device) FROM STREAM(1000, TIME)");  // This works fine
+        BQLResult result = builder.buildQuery("SELECT COUNT(DISTINCT page_uri, bucket_id_tag.883213, pty_device) FROM STREAM(1000, TIME)");   // FAILS with a number
+//        BQLResult result = builder.buildQuery("SELECT COUNT(DISTINCT page_uri, bucket_id_tag.string, pty_device) FROM STREAM(1000, TIME)");  // FAILS with a keyword or something??
+        System.out.println("------------------");
+        System.out.println(result.getErrors());
+        System.out.println("------------------");
+        Assert.assertFalse(result.hasErrors());
+    }
+
+
+    @Test
     public void testBulletException() {
         BQLResult result = builder.buildQuery("SELECT QUANTILE(abc, LINEAR, 0) FROM STREAM()");
         Assert.assertTrue(result.hasErrors());
